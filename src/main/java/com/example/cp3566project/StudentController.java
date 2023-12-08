@@ -25,7 +25,9 @@ public class StudentController {
 
     @GetMapping(path="/{id}")
     public @ResponseBody Optional<Student> getStudentById(@PathVariable(value="id") Integer id){
-        return studentRepository.findById(id);
+        Student student = studentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Student does not exist with id:" + id));
+        return Optional.ofNullable(student);
     }
     @PutMapping(path="/{id}")
     public ResponseEntity<Student> updateStudentById(@PathVariable Integer id,@RequestBody Student student) {

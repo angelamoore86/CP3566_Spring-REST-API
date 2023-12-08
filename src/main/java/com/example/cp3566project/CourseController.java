@@ -25,7 +25,9 @@ public class CourseController {
 
     @GetMapping(path="/{id}")
     public @ResponseBody Optional<Course> getCourseById(@PathVariable Integer id){
-        return courseRepository.findById(id);
+        Course course = courseRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Course does not exist with id:" + id));
+        return Optional.ofNullable(course);
     }
     @PutMapping(path="/{id}")
     public ResponseEntity<Course> updateCourseById(@PathVariable Integer id, @RequestBody Course course) {

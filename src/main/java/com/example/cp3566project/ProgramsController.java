@@ -24,7 +24,9 @@ public class ProgramsController {
     }
     @GetMapping(path="/{id}")
     public @ResponseBody Optional<Programs> getProgramById(@PathVariable Integer id){
-        return programsRepository.findById(id);
+        Programs programs = programsRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Program does not exist with id:" + id));
+        return Optional.ofNullable(programs);
     }
     @PutMapping(path="/{id}")
     public ResponseEntity<Programs> updateProgramsById(@PathVariable Integer id, @RequestBody Programs programs) {

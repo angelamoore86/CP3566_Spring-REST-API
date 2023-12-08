@@ -25,7 +25,9 @@ public class EnrollmentController {
     }
     @GetMapping(path="/{id}")
     public @ResponseBody Optional<Enrollment> getEnrollmentById(@PathVariable Integer id){
-        return enrollmentRepository.findById(id);
+        Enrollment enrollment = enrollmentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Enrollement does not exist with id:" + id));
+        return Optional.ofNullable(enrollment);
     }
     @PutMapping(path="/{id}")
     public ResponseEntity<Enrollment> updateEnrollmentById(@PathVariable Integer id, @RequestBody Enrollment enrollment) {

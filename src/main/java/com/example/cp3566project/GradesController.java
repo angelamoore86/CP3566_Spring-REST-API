@@ -25,7 +25,9 @@ public class GradesController {
     }
     @GetMapping(path="/{id}")
     public @ResponseBody Optional<Grades> getGradesById(@PathVariable Integer id){
-        return gradesRepository.findById(id);
+        Grades grades =  gradesRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("The grade does not exist with id:" + id));
+        return Optional.ofNullable(grades);
     }
     @PutMapping(path="/{id}")
     public ResponseEntity<Grades> updateGradesById(@PathVariable Integer id, @RequestBody Grades grades) {
